@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import * as actionCreators from '../../store/actions/actions';
 import CounterControl from '../../components/CounterControl/CounterControl';
 import CounterOutput from '../../components/CounterOutput/CounterOutput';
-import * as actionType from '../../store/actions';
 
 class Counter extends Component {
   render() {
@@ -24,10 +23,15 @@ class Counter extends Component {
           clicked={this.props.onSubtractCounter}
         />
         <hr />
-        <button onClick={() => this.props.onStoreResults(this.props.ctr)}>Store Result</button>
+        <button onClick={() => this.props.onStoreResults(this.props.ctr)}>
+          Store Result
+        </button>
         <ul>
           {this.props.storedResults.map(strResult => (
-            <li key={strResult.id} onClick={() => this.props.onDeleteResult(strResult.id)}>
+            <li
+              key={strResult.id}
+              onClick={() => this.props.onDeleteResult(strResult.id)}
+            >
               {strResult.value}
             </li>
           ))}
@@ -46,12 +50,12 @@ const mapToStateToProps = state => {
 
 const mapDispatchToProps = () => dispatch => {
   return {
-    onIncrementCounter: () => dispatch({ type: actionType.INCREMENT }),
-    onDecrementCounter: () => dispatch({ type: actionType.DECREMENT }),
-    onAddCounter: () => dispatch({ type: actionType.ADD, value: 5 }),
-    onSubtractCounter: () => dispatch({ type: actionType.SUBTRACT, value: 5 }),
-    onStoreResults: (results) => dispatch({ type: actionType.STORE_RESULT, results: results }),
-    onDeleteResult: (id) => dispatch({ type: actionType.DELETE_RESULT, resultElId: id })
+    onIncrementCounter: () => dispatch(actionCreators.increment()),
+    onDecrementCounter: () => dispatch(actionCreators.decrement()),
+    onAddCounter: () => dispatch(actionCreators.add(5)),
+    onSubtractCounter: () => dispatch(actionCreators.subtract(5)),
+    onStoreResults: results => dispatch(actionCreators.storeResult(results)),
+    onDeleteResult: id => dispatch(actionCreators.deleteResult(id))
   };
 };
 
